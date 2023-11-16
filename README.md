@@ -48,19 +48,50 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 7. La función que calcula en enésimo número de la secuencia de Fibonacci está muy mal construido y consume bastante CPU para obtener la respuesta. Usando la consola del Browser documente los tiempos de respuesta para dicho endpoint usando los siguintes valores:
     * 1000000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_111619.png)
+
     * 1010000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_111716.png)
+
     * 1020000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_111813.png)
+
     * 1030000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_111857.png)
+
     * 1040000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_112002.png)
+
     * 1050000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_112115.png)
+
     * 1060000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_112213.png)
+
     * 1070000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_112309.png)
+
     * 1080000
-    * 1090000    
+
+    ![Imágen 1](images/part1/Screenshot_20231115_112425.png)
+
+    * 1090000
+
+    ![Imágen 1](images/part1/Screenshot_20231115_112639.png)
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
 ![Imágen 2](images/part1/part1-vm-cpu.png)
+
+![Imágen 1](images/part1/Screenshot_20231115_111620.png)
 
 9. Ahora usaremos Postman para simular una carga concurrente a nuestro sistema. Siga estos pasos.
     * Instale newman con el comando `npm install newman -g`. Para conocer más de Newman consulte el siguiente [enlace](https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/).
@@ -73,29 +104,148 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
     ```
 
+    ![Imágen 1](images/part1/Screenshot_20231115_122221.png)
+
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
 
 ![Imágen 3](images/part1/part1-vm-resize.png)
 
 11. Una vez el cambio se vea reflejado, repita el paso 7, 8 y 9.
+
+
+    7. La función que calcula en enésimo número de la secuencia de Fibonacci está muy mal construido y consume bastante CPU para obtener la respuesta. Usando la consola del Browser documente los tiempos de respuesta para dicho endpoint usando los siguintes valores:
+        * 1000000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_123205.png)
+
+        * 1010000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_123258.png)
+
+        * 1020000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_123353.png)
+
+        * 1030000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_123436.png)
+
+        * 1040000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_123539.png)
+
+        * 1050000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_123658.png)
+
+        * 1060000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_123822.png)
+
+        * 1070000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_123912.png)
+
+        * 1080000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_124004.png)
+
+        * 1090000
+
+        ![Imágen 1](images/part1/Screenshot_20231115_124050.png)
+
+    8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
+
+        ![Imágen 1](images/part1/Screenshot_20231115_124229.png)
+
+    9. Ahora usaremos Postman para simular una carga concurrente a nuestro sistema. Siga estos pasos.
+
+        ![Imágen 1](images/part1/Screenshot_20231115_124424.png)
+
 12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
+
+        El requerimiento no funcional de escalabilidad establece que todas las peticiones deben ser respondidas, y el consumo de
+        la CPU no puede exceder el 70%. Al analizar el rendimiento del sistema, observamos que, en general, el consumo de CPU se
+        mantiene por debajo del límite establecido. Sin embargo, se observa un pico significativo en la gráfica de la VM. Es
+        importante señalar que este pico no supera el límite crítico del 70%, y se puede atribuir al cambio entre máquinas.
+
+        El método de escalabilidad implementado ha demostrado ser eficaz en la gestión de la carga de trabajo. La distribución
+        uniforme de las solicitudes entre los servidores, junto con un mecanismo de balanceo de carga eficiente, contribuye a
+        mantener el rendimiento dentro de los límites aceptables. Además, la capacidad del sistema para escalar automáticamente
+        hacia arriba o hacia abajo según la demanda,
+
 13. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
 
 **Preguntas**
 
 1. ¿Cuántos y cuáles recursos crea Azure junto con la VM?
+
+    Crea 2 SCALABILITY_LAB (Grupo de recursos) y saclabilitylab (Maquina virtual).
+
 2. ¿Brevemente describa para qué sirve cada recurso?
+
+    SCALABILITY_LAB (Grupo de recursos): Azure organiza los recursos en grupos de recursos. Al crear una VM, se crea
+    automáticamente un grupo de recursos para contener todos los recursos relacionados con esa VM.
+
+    saclabilitylab (Maquina virtual): Es la maquina virtual creada.
+
 3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
+
+    Esto es proque proceso que ejecuta la aplicación está asociado con el puerto SSH que inició la aplicación. Cuando cierras esa sesión,
+    todos los procesos asociados a ella también se deben cerrar.
+
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
+
+    ![Imágen 1](images/part1/Screenshot_20231115_150618.png)
+
 5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
+
+        B1ls
+    ![Imágen 1](images/part1/Screenshot_20231115_111620.png)
+
+        B2ms
+    ![Imágen 1](images/part1/Screenshot_20231115_124229.png)
+
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.
+
+        B1ls
+    ![Imágen 1](images/part1/Screenshot_20231115_122221.png)
+
+        B2ms
+    ![Imágen 1](images/part1/Screenshot_20231115_124424.png)
+
     * Si hubo fallos documentelos y explique.
+
+    No hubo.
+
+
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
+
+    B1ls: Es una máquina virtual con bajo costo y rendimiento. Cuenta con 1 GB de RAM, lo que la hace más asequible, pero también
+    la limita en términos de disponibilidad y rendimiento.
+
+    B2ms: Es una máquina virtual con un costo moderado y un rendimiento intermedio. Equipada con 8 GB de RAM, ofrece un equilibrio entre recursos
+    y precio. Aunque es más cara que la B1ls, su rendimiento la hace más adecuada para cargas de trabajo que requieren más capacidad.
+
 8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
+
+    Aumentar el tamaño es una solución aceptable, pero no muy eficiente. Si bien los tiempos de ejecución mejoraron, fue solo hasta cierto punto,
+    y el costo resulta demasiado elevado para considerarlo una solución viable.
+
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
+
+    Al aumentar el tamaño, se genera un mayor costo y también se experimenta un aumento en el tiempo de activación de la máquina,
+    lo que implica que el servicio no estará disponible durante este periodo de cambio.
+
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
+
+    Si se observó una mejora en el consumo de CPU al utilizar una máquina mas grande, lo que resultó en una disminución del tiempo, por que posee mayor capacidad.
+
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
+
+    Al incrementar la cantidad de ejecuciones paralelas, se puede observar que el rendimiento del sistema mejora significativamente en
+    comparación con lo que se mostró inicialmente.
 
 ### Parte 2 - Escalabilidad horizontal
 
